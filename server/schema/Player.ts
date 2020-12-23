@@ -12,6 +12,9 @@ export class Player extends Schema {
   @type('number')
   index = -1
 
+  @type('number')
+  score = 0
+
   @type('boolean')
   connected = true
 

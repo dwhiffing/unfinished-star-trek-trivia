@@ -8,6 +8,8 @@ export function OnlineRoom({ room, setRoom }) {
   const state = useRoomState({ room, setRoom })
   if (!room) return null
 
+  console.log(state)
+
   return (
     <Flex className="container" variant="column">
       <Header {...state} />

@@ -7,6 +7,7 @@ export const useRoomState = ({ room, setRoom }) => {
     if (!room) return
     setServerState(room.state.toJSON())
     room.onStateChange((state) => {
+      console.log(state.toJSON())
       setServerState(state.toJSON())
     })
 
@@ -21,7 +22,8 @@ export const useRoomState = ({ room, setRoom }) => {
     (serverState.players || []).find((p) => p.id === room.sessionId) || {}
 
   const onLeave = () => room.leave()
+  const onStart = () => room.send('Start')
   const onKick = (player) => room.send('Leave', { playerId: player.id })
 
-  return { ...serverState, room, clientPlayer, onLeave, onKick }
+  return { ...serverState, room, clientPlayer, onLeave, onKick, onStart }
 }
