@@ -1,0 +1,10 @@
+body {
+  margin: 0 5px;
+  position: relative;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
