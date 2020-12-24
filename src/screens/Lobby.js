@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { Box, Typography, TextField } from '@material-ui/core'
+import { Box, Typography, TextField, Button } from '@material-ui/core'
 import { Flex } from '../components/Flex'
 import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
-
+import chunk from 'lodash/chunk'
 export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   const intervalRef = useRef()
   const autoConnectAttempted = useRef(false)
@@ -71,6 +71,58 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
     }
   }, [availableRooms, joinRoom, name])
 
+  // const lines = name.split('\n').filter((f) => f.trim() !== '')
+  // const questions = [
+  //   ...chunk(lines.slice(0, 20), 4).map(([question, ...answers], index) => ({
+  //     label: question.replace(/^\d\. /, ''),
+  //     correctAnswer: (answers.find((a) => a.match(/\*/)) || '')
+  //       .replace(/^(A|B|C)\. /, '')
+  //       .replace('*', ''),
+  //     level: index + 1,
+  //     answers: answers.map((a) =>
+  //       a.replace(/^(A|B|C)\. /, '').replace('*', ''),
+  //     ),
+  //   })),
+  //   ...chunk(lines.slice(20), 1).map(([question, ...answers], index) => ({
+  //     label:
+  //       question
+  //         .replace(/^(\d)\. /, '')
+  //         .split('?')[0]
+  //         .trim() + '?',
+  //     correctAnswer: (
+  //       question.replace(/^(\d)\. /, '').split('?')[1] || ''
+  //     ).trim(),
+  //     level: index + 6,
+  //   })),
+  // ]
+
+  // return (
+  //   <div>
+  //     <TextField
+  //       multiline
+  //       placeholder="Enter name"
+  //       value={name}
+  //       style={{
+  //         marginBottom: 20,
+  //         width: '100%',
+  //         height: 100,
+  //         overflow: 'hidden',
+  //       }}
+  //       onChange={(e) => setName(e.target.value)}
+  //     />
+  //     <TextField
+  //       multiline
+  //       value={JSON.stringify(questions).replace(/(^\[|\]$)/g, '')}
+  //       style={{
+  //         marginBottom: 20,
+  //         width: '100%',
+  //         height: 100,
+  //         overflow: 'hidden',
+  //       }}
+  //     />
+  //   </div>
+  // )
+
   return (
     <Flex variant="column center" style={{ height: '100vh' }}>
       <TextField
@@ -106,7 +158,7 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
 const RoomListItem = ({ room, onClick }) => (
   <Box>
     <Typography
-      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'white' }}
+      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}
       onClick={onClick}
     >
       {room.metadata.roomName || room.roomId}

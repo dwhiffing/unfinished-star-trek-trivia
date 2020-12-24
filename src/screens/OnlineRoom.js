@@ -25,10 +25,12 @@ export function OnlineRoom({ room, setRoom }) {
   const state = useRoomState({ room, setRoom })
   if (!room) return null
 
-  // const card = state.cards ? state.cards[0] : null
-
   return (
-    <Flex className="container" variant="column">
+    <Flex
+      className="container"
+      variant="column"
+      style={{ background: 'black' }}
+    >
       <Header {...state} />
 
       {state.phaseIndex > -1 && <Rows rows={rows} {...state} />}

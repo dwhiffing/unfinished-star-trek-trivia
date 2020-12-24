@@ -1,21 +1,15 @@
 import { Command } from '@colyseus/command'
 import { RoomState } from '../schema'
-import { CARDS } from '../../lib/trivia'
+import { QUESTIONS } from '../../lib/trivia'
 import { ArraySchema } from '@colyseus/schema'
-import { Card, Question } from '../schema/Card'
+import { Question } from '../schema/Question'
 
 export class StartCommand extends Command<RoomState, { playerId: string }> {
   execute({ playerId }) {
     this.state.phaseIndex = 0
     this.state.turnIndex = 0
-    this.state.cards = new ArraySchema<Card>(
-      ...CARDS.map(
-        (c) =>
-          new Card({
-            id: c.id,
-            questions: c.questions.map((q) => new Question(q)),
-          }),
-      ),
+    this.state.questions = new ArraySchema<Question>(
+      ...QUESTIONS.map((q) => new Question(q)),
     )
   }
 }

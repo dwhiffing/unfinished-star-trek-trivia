@@ -19,19 +19,3 @@ export class Question extends Schema {
     this.correctAnswer = correctAnswer
   }
 }
-
-export class Card extends Schema {
-  reconnection: any
-
-  @type('number')
-  id
-
-  @type([Question])
-  questions = []
-
-  constructor({ id, questions }) {
-    super()
-    this.id = id
-    this.questions = questions
-  }
-}

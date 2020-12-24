@@ -1,6 +1,6 @@
 import { type, Schema, ArraySchema } from '@colyseus/schema'
 import { Player } from './Player'
-import { Card } from './Card'
+import { Question } from './Question'
 
 export class RoomState extends Schema {
   @type([Player])
@@ -12,8 +12,8 @@ export class RoomState extends Schema {
   @type('number')
   phaseIndex = -1
 
-  @type([Card])
-  cards = new ArraySchema<Card>()
+  @type([Question])
+  questions = new ArraySchema<Question>()
 
   constructor() {
     super()
