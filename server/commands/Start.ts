@@ -6,6 +6,8 @@ import { Card, Question } from '../schema/Card'
 
 export class StartCommand extends Command<RoomState, { playerId: string }> {
   execute({ playerId }) {
+    this.state.phaseIndex = 0
+    this.state.turnIndex = 0
     this.state.cards = new ArraySchema<Card>(
       ...CARDS.map(
         (c) =>

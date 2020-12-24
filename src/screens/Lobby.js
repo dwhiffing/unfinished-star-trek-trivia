@@ -106,7 +106,7 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
 const RoomListItem = ({ room, onClick }) => (
   <Box>
     <Typography
-      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'white' }}
       onClick={onClick}
     >
       {room.metadata.roomName || room.roomId}

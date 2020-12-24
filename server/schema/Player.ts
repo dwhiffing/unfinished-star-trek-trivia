@@ -13,6 +13,12 @@ export class Player extends Schema {
   index = -1
 
   @type('number')
+  x = 0
+
+  @type('number')
+  y = 0
+
+  @type('number')
   score = 0
 
   @type('boolean')
@@ -24,8 +30,11 @@ export class Player extends Schema {
   @type('number')
   remainingConnectionTime = 0
 
-  constructor(id: string) {
+  constructor(id: string, index, y) {
     super()
     this.id = id
+    this.index = index
+    this.x = index
+    this.y = y
   }
 }

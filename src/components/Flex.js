@@ -18,6 +18,14 @@ export const Flex = ({
     style.justifyContent = 'space-between'
   }
 
+  if (/justify-evenly/.test(variant)) {
+    style.justifyContent = 'space-evenly'
+  }
+
+  if (/justify-evenly/.test(variant)) {
+    style.justifyContent = 'space-evenly'
+  }
+
   if (/justify-end/.test(variant)) {
     style.justifyContent = 'flex-end'
   }

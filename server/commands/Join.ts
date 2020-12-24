@@ -3,7 +3,7 @@ import { Player, RoomState } from '../schema'
 
 export class JoinCommand extends Command<RoomState, { playerId: string }> {
   execute({ playerId, name }) {
-    const player = new Player(playerId)
+    const player = new Player(playerId, this.state.players.length, 0)
     player.name = name
     this.state.players.push(player)
 
