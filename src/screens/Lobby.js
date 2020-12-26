@@ -4,7 +4,7 @@ import { Flex } from '../components/Flex'
 import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
-import chunk from 'lodash/chunk'
+
 export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   const intervalRef = useRef()
   const autoConnectAttempted = useRef(false)
@@ -70,58 +70,6 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
       joinRoom(lastRoom.roomId, name)
     }
   }, [availableRooms, joinRoom, name])
-
-  // const lines = name.split('\n').filter((f) => f.trim() !== '')
-  // const questions = [
-  //   ...chunk(lines.slice(0, 20), 4).map(([question, ...answers], index) => ({
-  //     label: question.replace(/^\d\. /, ''),
-  //     correctAnswer: (answers.find((a) => a.match(/\*/)) || '')
-  //       .replace(/^(A|B|C)\. /, '')
-  //       .replace('*', ''),
-  //     level: index + 1,
-  //     answers: answers.map((a) =>
-  //       a.replace(/^(A|B|C)\. /, '').replace('*', ''),
-  //     ),
-  //   })),
-  //   ...chunk(lines.slice(20), 1).map(([question, ...answers], index) => ({
-  //     label:
-  //       question
-  //         .replace(/^(\d)\. /, '')
-  //         .split('?')[0]
-  //         .trim() + '?',
-  //     correctAnswer: (
-  //       question.replace(/^(\d)\. /, '').split('?')[1] || ''
-  //     ).trim(),
-  //     level: index + 6,
-  //   })),
-  // ]
-
-  // return (
-  //   <div>
-  //     <TextField
-  //       multiline
-  //       placeholder="Enter name"
-  //       value={name}
-  //       style={{
-  //         marginBottom: 20,
-  //         width: '100%',
-  //         height: 100,
-  //         overflow: 'hidden',
-  //       }}
-  //       onChange={(e) => setName(e.target.value)}
-  //     />
-  //     <TextField
-  //       multiline
-  //       value={JSON.stringify(questions).replace(/(^\[|\]$)/g, '')}
-  //       style={{
-  //         marginBottom: 20,
-  //         width: '100%',
-  //         height: 100,
-  //         overflow: 'hidden',
-  //       }}
-  //     />
-  //   </div>
-  // )
 
   return (
     <Flex variant="column center" style={{ height: '100vh' }}>

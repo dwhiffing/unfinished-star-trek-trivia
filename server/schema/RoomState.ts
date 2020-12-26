@@ -15,6 +15,9 @@ export class RoomState extends Schema {
   @type([Question])
   questions = new ArraySchema<Question>()
 
+  @type(Question)
+  activeQuestion
+
   constructor() {
     super()
   }

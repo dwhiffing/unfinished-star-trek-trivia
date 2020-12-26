@@ -23,6 +23,7 @@ export const useRoomState = ({ room, setRoom }) => {
   const onLeave = () => room.leave()
   const onStart = () => room.send('Start')
   const onMove = (x, y) => room.send('Move', { x, y })
+  const onAnswer = (answer) => room.send('Answer', { answer })
   const onKick = (player) => room.send('Leave', { playerId: player.id })
 
   return {
@@ -33,5 +34,6 @@ export const useRoomState = ({ room, setRoom }) => {
     onKick,
     onStart,
     onMove,
+    onAnswer,
   }
 }

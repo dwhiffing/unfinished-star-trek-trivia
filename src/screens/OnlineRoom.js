@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Flex } from '../components/Flex'
 import { useRoomState } from '../utils/useRoomState'
 import { Actions } from '../components/Actions'
@@ -33,10 +33,11 @@ export function OnlineRoom({ room, setRoom }) {
     >
       <Header {...state} />
 
-      {state.phaseIndex > -1 && <Rows rows={rows} {...state} />}
-      {state.phaseIndex > -1 && <Players {...state} />}
-
-      {/* <Question card={card} questionIndex={2} /> */}
+      {state.phaseIndex === 0 && <Rows rows={rows} {...state} />}
+      {state.phaseIndex === 0 && <Players {...state} />}
+      {state.phaseIndex === 1 && (
+        <Question question={state.activeQuestion} onClick={state.onAnswer} />
+      )}
 
       <Actions {...state} />
     </Flex>
@@ -82,7 +83,7 @@ const Players = ({ players = [], clientPlayer }) => {
       >
         <div
           style={{
-            transform: `translate(${x - 30}px, ${y - 30}px)`,
+            transform: `translate(${x + 28}px, ${y + 20}px)`,
             transition: 'transform 2000ms',
             transitionTimingFunction: 'ease-in-out',
             width: 55,
@@ -91,8 +92,10 @@ const Players = ({ players = [], clientPlayer }) => {
             justifyContent: 'center',
             alignItems: 'center',
             boxSizing: 'border-box',
-            borderColor: player.id === clientPlayer.id ? 'white' : 'black',
-            border: '1px solid white',
+            backgroundColor:
+              player.id === clientPlayer.id
+                ? 'rgba(255,255,255,0.5)'
+                : 'rgba(255,255,255,0)',
             borderRadius: 50,
           }}
         >
@@ -126,17 +129,56 @@ const Node = ({ type, onClick, x, y, isHighlighted }) => (
 
 const PLANETS = [planet1, planet2, planet3]
 
-const Question = ({ card, questionIndex = 0 }) => {
-  if (!card) return null
-  const { label, answers, correctAnswer } = card.questions[questionIndex]
+const Question = ({ question, onClick }) => {
+  const [revealed, setRevealed] = useState(false)
+  if (!question) return null
+  const { label, answers = [], level, correctAnswer } = question
   return (
-    <Flex variant="column">
-      <Typography>{label}</Typography>
-      {answers.map((answer) => (
-        <Button onClick={() => console.log(answer === correctAnswer)}>
-          {answer}
-        </Button>
-      ))}
+    <Flex variant="column" style={{ color: 'white' }}>
+      <Typography>
+        {label} ({level})
+      </Typography>
+      {answers.length === 0 ? (
+        <>
+          {revealed ? (
+            <>
+              <Typography>{correctAnswer}</Typography>
+
+              <Button onClick={() => onClick(true)} style={{ color: 'white' }}>
+                Correct
+              </Button>
+              <Button onClick={() => onClick(false)} style={{ color: 'white' }}>
+                Incorrect
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => setRevealed(true)}
+              style={{ color: 'white' }}
+            >
+              Reveal
+            </Button>
+          )}
+        </>
+      ) : (
+        <>
+          {answers.map((answer) => (
+            <Button
+              onClick={() => {
+                onClick(answer)
+                setRevealed(true)
+              }}
+              style={{
+                color: revealed && answer === correctAnswer ? 'black' : 'white',
+                backgroundColor:
+                  revealed && answer === correctAnswer ? 'white' : 'black',
+              }}
+            >
+              {answer}
+            </Button>
+          ))}
+        </>
+      )}
     </Flex>
   )
 }

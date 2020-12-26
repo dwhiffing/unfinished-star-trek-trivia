@@ -1,5 +1,8 @@
 import { Command } from '@colyseus/command'
+import { QUESTIONS } from '../../lib/trivia'
 import { RoomState } from '../schema'
+import { Question } from '../schema/Question'
+import shuffle from 'lodash/shuffle'
 
 export class MoveCommand extends Command<
   RoomState,
@@ -20,13 +23,9 @@ export class MoveCommand extends Command<
   execute({ playerId, x, y }) {
     const player = this.state.players.find((p) => p.id === playerId)
 
-    this.state.turnIndex++
-
-    if (this.state.turnIndex > this.state.players.length - 1) {
-      this.state.turnIndex = 0
-    }
-
     player.x = x
     player.y = y
+    this.state.activeQuestion = new Question(shuffle(QUESTIONS)[0])
+    this.state.phaseIndex++
   }
 }

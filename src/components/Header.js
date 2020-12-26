@@ -3,7 +3,7 @@ import { Flex } from '../components/Flex'
 import { Action } from '../components/Action'
 
 export const Header = ({ onLeave, onList, phaseIndex }) => (
-  <Flex variant="justify-between">
+  <Flex variant="justify-between" style={{ color: 'white' }}>
     <Flex style={{ minWidth: 50 }}>
       <Action onClick={onLeave}>Leave</Action>
     </Flex>
