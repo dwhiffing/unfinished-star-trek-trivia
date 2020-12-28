@@ -1,0 +1,47 @@
+goal:
+  find type m planets and discover new lifeforms
+  discover 3 new lifeforms and return to starfleet
+
+areas:
+  starting area: easy encounters, events are positive
+  neutral zone:
+  cardassian space:
+
+node types:
+  empty space
+    nothing happens
+
+  space station
+    checkpoint,
+    repair hull, charge shields and torpedoes
+
+  anomaly ( random event, maybe good or bad)
+    wormhole: teleport between 2 points
+
+  friendly ship
+    distress: ( answer question to attempt to help, get reward if successful)
+    gift: ( ask for assitance)
+    threaten: ( demand assistance, lowers relations)
+
+  hostile ship
+    diplomatic outcome: random chance of success based on alien encounter
+    battle outcome: answer trivia to win/lose battle
+
+  type m planet (answer hard question, correct: discover new life incorrect: return to starfleet)
+
+
+repair:
+  when damaged, must answer question to repair ship before moving again
+  
+Trivia types:
+  multiple choice
+  single answer
+  
+  Given an episode name:
+    guess the season
+    describe the plot
+    give a quote
+
+  Given a random quote, guess who said it
+  Ship malfunction (pick the correct option to fix the ship) (engine, weapons, shields, hull)
+  

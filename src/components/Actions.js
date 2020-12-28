@@ -13,10 +13,16 @@ const LobbyActions = (props) =>
   props.clientPlayer.isAdmin && (
     <>
       <Action disabled={props.players.length < 2} onClick={props.onStart}>
-        Start
+        Start Game
       </Action>
     </>
   )
 
-const GameActions = (props) =>
-  props.turnIndex === props.clientPlayer.index && <></>
+const GameActions = (props) => {
+  const thing = props.turnIndex === props.clientPlayer.index
+  return (
+    <>
+      <Typography>It's your turn</Typography>
+    </>
+  )
+}

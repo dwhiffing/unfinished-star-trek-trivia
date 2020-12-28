@@ -30,6 +30,10 @@ export const Flex = ({
     style.justifyContent = 'flex-end'
   }
 
+  if (/align-end/.test(variant)) {
+    style.alignItems = 'flex-end'
+  }
+
   if (/align-center/.test(variant)) {
     style.alignItems = 'center'
   } else if (/justify-center/.test(variant)) {

@@ -1,5 +1,15 @@
 import { useEffect, useState } from 'react'
 
+const rows = [
+  [{ type: -1 }, { type: -1 }, { type: -1 }],
+  [{ type: 0 }, { type: 1 }, { type: 1 }],
+  [{ type: 2 }, { type: 0 }],
+  [{ type: 0 }, { type: 1 }, { type: 0 }, { type: 2 }],
+  [{ type: 0 }, { type: 1 }, { type: 2 }],
+  [{ type: 0 }, { type: 2 }, { type: 0 }, { type: 0 }],
+  [{ type: 0 }, { type: 2 }, { type: 0 }],
+].map((row, y) => row.map((node, x) => ({ ...node, x, y })))
+
 export const useRoomState = ({ room, setRoom }) => {
   const [serverState, setServerState] = useState(room.state.toJSON())
 
@@ -28,6 +38,7 @@ export const useRoomState = ({ room, setRoom }) => {
 
   return {
     ...serverState,
+    rows,
     room,
     clientPlayer,
     onLeave,

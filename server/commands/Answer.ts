@@ -9,14 +9,15 @@ export class AnswerCommand extends Command<
     if (this.state.phaseIndex !== 1) return false
 
     const player = this.state.players.find((p) => p.id === playerId)
-    if (this.state.turnIndex === player.index) return false
+    if (this.state.turnIndex !== player.index) return false
 
     return true
   }
 
   execute({ playerId, answer }) {
-    console.log({ playerId, answer })
     const player = this.state.players.find((p) => p.id === playerId)
+    const duration = typeof answer === 'boolean' ? 0 : 3000
+
     if (
       answer === false ||
       this.state.activeQuestion.correctAnswer !== answer
@@ -29,13 +30,14 @@ export class AnswerCommand extends Command<
         if (this.state.turnIndex > this.state.players.length - 1) {
           this.state.turnIndex = 0
         }
-      }, 3000)
+      }, duration)
     } else {
       player.score++
+
       this.clock.setTimeout(() => {
         this.state.phaseIndex = 0
         this.state.activeQuestion = null
-      }, 3000)
+      }, duration)
     }
   }
 }

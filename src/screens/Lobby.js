@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { Box, Typography, TextField, Button } from '@material-ui/core'
+import { Box, Typography, TextField } from '@material-ui/core'
 import { Flex } from '../components/Flex'
 import faker from 'faker'
 import truncate from 'lodash/truncate'
@@ -72,11 +72,15 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   }, [availableRooms, joinRoom, name])
 
   return (
-    <Flex variant="column center" style={{ height: '100vh' }}>
+    <Flex
+      variant="column center"
+      style={{ height: '100vh', background: 'black', color: 'white' }}
+    >
       <TextField
         placeholder="Enter name"
         value={name}
-        style={{ marginBottom: 20 }}
+        style={{ marginBottom: 20, color: 'white' }}
+        InputProps={{ style: { color: 'white' } }}
         onChange={(e) =>
           setName(truncate(e.target.value, { length: 10, omission: '' }))
         }
@@ -106,7 +110,7 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
 const RoomListItem = ({ room, onClick }) => (
   <Box>
     <Typography
-      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'black' }}
+      style={{ cursor: 'pointer', textDecoration: 'underline', color: 'white' }}
       onClick={onClick}
     >
       {room.metadata.roomName || room.roomId}

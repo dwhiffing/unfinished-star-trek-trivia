@@ -25,7 +25,10 @@ export class MoveCommand extends Command<
 
     player.x = x
     player.y = y
-    this.state.activeQuestion = new Question(shuffle(QUESTIONS)[0])
-    this.state.phaseIndex++
+
+    this.clock.setTimeout(() => {
+      this.state.activeQuestion = new Question(shuffle(QUESTIONS)[0])
+      this.state.phaseIndex++
+    }, 2000)
   }
 }

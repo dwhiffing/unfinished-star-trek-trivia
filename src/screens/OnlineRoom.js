@@ -1,109 +1,151 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Flex } from '../components/Flex'
 import { useRoomState } from '../utils/useRoomState'
 import { Actions } from '../components/Actions'
 import { Header } from '../components/Header'
-import { Button, ButtonBase, Typography } from '@material-ui/core'
+import { Box, ButtonBase, Typography } from '@material-ui/core'
 import planet1 from '../images/planet1.png'
 import planet2 from '../images/planet2.png'
 import planet3 from '../images/planet3.png'
 import ship from '../images/ship1.png'
-
-const rows = [
-  [{ type: -1 }, { type: -1 }, { type: -1 }],
-  [{ type: 0 }, { type: 1 }, { type: 1 }],
-  [{ type: 2 }, { type: 0 }],
-  [{ type: 0 }, { type: 1 }, { type: 0 }, { type: 2 }],
-  [{ type: 0 }, { type: 1 }, { type: 2 }],
-  [{ type: 0 }, { type: 2 }, { type: 0 }, { type: 0 }],
-  [{ type: 0 }, { type: 2 }, { type: 0 }],
-]
-  .map((row, y) => row.map((node, x) => ({ ...node, x, y })))
-  .reverse()
+import { Question } from '../components/Question'
 
 export function OnlineRoom({ room, setRoom }) {
   const state = useRoomState({ room, setRoom })
+
   if (!room) return null
 
   return (
     <Flex
       className="container"
       variant="column"
-      style={{ background: 'black' }}
+      style={{ background: 'black', height: '100vh' }}
     >
       <Header {...state} />
 
-      {state.phaseIndex === 0 && <Rows rows={rows} {...state} />}
-      {state.phaseIndex === 0 && <Players {...state} />}
-      {state.phaseIndex === 1 && (
-        <Question question={state.activeQuestion} onClick={state.onAnswer} />
-      )}
+      <Flex
+        variant="column"
+        style={{ overflow: 'scroll', position: 'relative' }}
+      >
+        {state.phaseIndex === -1 && <PreGame {...state} />}
+        {state.phaseIndex === 0 && <Rows {...state} />}
+        {state.phaseIndex === 1 && (
+          <Question
+            disabled={state.turnIndex !== state.clientPlayer.index}
+            question={state.activeQuestion}
+            onClick={state.onAnswer}
+          />
+        )}
+      </Flex>
 
-      <Actions {...state} />
+      <Box style={{ display: 'flex', justifyContent: 'center' }}>
+        <Actions {...state} />
+      </Box>
     </Flex>
   )
 }
 
-const Rows = ({ rows, onMove, turnIndex, clientPlayer }) =>
-  rows.map((row) => (
-    <Flex variant="justify-evenly" style={{ margin: '80px 20px' }}>
-      {row.map((node) => (
-        <Node
-          onClick={onMove}
-          {...node}
-          isHighlighted={
-            turnIndex === clientPlayer.index &&
-            (node.y === clientPlayer.y ||
-              node.y === clientPlayer.y - 1 ||
-              node.y === clientPlayer.y + 1)
-          }
-        />
-      ))}
-    </Flex>
-  ))
+const PreGame = (props) => (
+  <Flex variant="column center">
+    <Box mb={6}>
+      <Typography variant="h5">Players:</Typography>
 
-const Players = ({ players = [], clientPlayer }) => {
-  return players.map((player) => {
-    const node = document.querySelector(`.node-${player.x}-${player.y}`)
-    if (!node) return null
+      <Flex flex={0} variant="column center">
+        {props.players.map((p) => (
+          <Typography key={p.name}>{p.name}</Typography>
+        ))}
+      </Flex>
+    </Box>
 
-    const x = node.offsetLeft
-    const y = node.offsetTop
+    <Typography>Waiting for game to start</Typography>
+  </Flex>
+)
 
-    return (
-      <div
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
+const Rows = (state) => (
+  <Box>
+    <Players {...state} />
+    {state.rows.map((row, rowIndex) => (
+      <Flex
+        key={rowIndex}
+        variant="justify-evenly"
+        style={{ margin: '80px 20px' }}
       >
-        <div
-          style={{
-            transform: `translate(${x + 28}px, ${y + 20}px)`,
-            transition: 'transform 2000ms',
-            transitionTimingFunction: 'ease-in-out',
-            width: 55,
-            height: 55,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            boxSizing: 'border-box',
-            backgroundColor:
-              player.id === clientPlayer.id
-                ? 'rgba(255,255,255,0.5)'
-                : 'rgba(255,255,255,0)',
-            borderRadius: 50,
-          }}
-        >
-          <img src={ship} alt="planet" style={{ width: 30, height: 30 }} />
-        </div>
-      </div>
-    )
-  })
+        {row.map((node, index) => (
+          <Node
+            key={index}
+            onClick={state.onMove}
+            {...node}
+            isHighlighted={
+              state.turnIndex === state.clientPlayer.index &&
+              (node.y === state.clientPlayer.y ||
+                node.y === state.clientPlayer.y - 1 ||
+                node.y === state.clientPlayer.y + 1)
+            }
+          />
+        ))}
+      </Flex>
+    ))}
+  </Box>
+)
+
+const Players = ({ players = [], clientPlayer }) => (
+  <Box
+    style={{
+      pointerEvents: 'none',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 2,
+    }}
+  >
+    {players.map((player) => (
+      <Player key={player.name} player={player} clientPlayer={clientPlayer} />
+    ))}
+  </Box>
+)
+
+const Player = ({ player, clientPlayer }) => {
+  const [state, setState] = useState(0)
+  useEffect(() => {
+    setTimeout(() => {
+      setState(1)
+    }, 500)
+
+    setTimeout(() => {
+      setState(2)
+    }, 1000)
+  }, [])
+
+  const node = document.querySelector(`.node-${player.x}-${player.y}`)
+  const x = node ? node.offsetLeft : -1
+  const y = node ? node.offsetTop : -1
+
+  return (
+    <div
+      key={player.name}
+      style={{
+        position: 'absolute',
+        transform: state >= 1 ? `translate(${x}px, ${y}px) scaleY(-1)` : null,
+        transition: state === 2 ? 'transform 1400ms ease-in-out' : null,
+        opacity: state >= 1 ? 1 : 0,
+        width: 55,
+        height: 55,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        boxSizing: 'border-box',
+        borderRadius: 50,
+        backgroundColor:
+          player.id === clientPlayer.id
+            ? 'rgba(255,255,255,0.5)'
+            : 'rgba(255,255,255,0)',
+      }}
+    >
+      <img src={ship} alt="planet" style={{ width: 30, height: 30 }} />
+    </div>
+  )
 }
 
 const Node = ({ type, onClick, x, y, isHighlighted }) => (
@@ -128,57 +170,3 @@ const Node = ({ type, onClick, x, y, isHighlighted }) => (
 )
 
 const PLANETS = [planet1, planet2, planet3]
-
-const Question = ({ question, onClick }) => {
-  const [revealed, setRevealed] = useState(false)
-  if (!question) return null
-  const { label, answers = [], level, correctAnswer } = question
-  return (
-    <Flex variant="column" style={{ color: 'white' }}>
-      <Typography>
-        {label} ({level})
-      </Typography>
-      {answers.length === 0 ? (
-        <>
-          {revealed ? (
-            <>
-              <Typography>{correctAnswer}</Typography>
-
-              <Button onClick={() => onClick(true)} style={{ color: 'white' }}>
-                Correct
-              </Button>
-              <Button onClick={() => onClick(false)} style={{ color: 'white' }}>
-                Incorrect
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={() => setRevealed(true)}
-              style={{ color: 'white' }}
-            >
-              Reveal
-            </Button>
-          )}
-        </>
-      ) : (
-        <>
-          {answers.map((answer) => (
-            <Button
-              onClick={() => {
-                onClick(answer)
-                setRevealed(true)
-              }}
-              style={{
-                color: revealed && answer === correctAnswer ? 'black' : 'white',
-                backgroundColor:
-                  revealed && answer === correctAnswer ? 'white' : 'black',
-              }}
-            >
-              {answer}
-            </Button>
-          ))}
-        </>
-      )}
-    </Flex>
-  )
-}
