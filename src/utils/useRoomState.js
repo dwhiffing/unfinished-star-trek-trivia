@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react'
 
 const rows = [
-  [{ type: -1 }, { type: -1 }, { type: -1 }],
   [{ type: 0 }, { type: 1 }, { type: 1 }],
   [{ type: 2 }, { type: 0 }],
   [{ type: 0 }, { type: 1 }, { type: 0 }, { type: 2 }],
+  [{ type: 2 }, { type: 0 }],
   [{ type: 0 }, { type: 1 }, { type: 2 }],
   [{ type: 0 }, { type: 2 }, { type: 0 }, { type: 0 }],
+  [{ type: 0 }, { type: 1 }, { type: 2 }],
+  [{ type: 2 }, { type: 0 }],
   [{ type: 0 }, { type: 2 }, { type: 0 }],
-].map((row, y) => row.map((node, x) => ({ ...node, x, y })))
+  [{ type: 0 }, { type: 2 }, { type: 0 }, { type: 0 }],
+  [{ type: 0 }, { type: 2 }, { type: 0 }],
+  [{ type: 2 }, { type: 0 }],
+]
 
 export const useRoomState = ({ room, setRoom }) => {
   const [serverState, setServerState] = useState(room.state.toJSON())
@@ -36,9 +41,14 @@ export const useRoomState = ({ room, setRoom }) => {
   const onAnswer = (answer) => room.send('Answer', { answer })
   const onKick = (player) => room.send('Leave', { playerId: player.id })
 
+  const finalRows = [
+    (serverState.players || []).map((p) => ({ type: -1 })),
+    ...rows,
+  ].map((row, y) => row.map((node, x) => ({ ...node, x, y })))
+
   return {
     ...serverState,
-    rows,
+    rows: finalRows,
     room,
     clientPlayer,
     onLeave,

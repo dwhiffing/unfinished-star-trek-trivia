@@ -19,10 +19,11 @@ const LobbyActions = (props) =>
   )
 
 const GameActions = (props) => {
-  const thing = props.turnIndex === props.clientPlayer.index
+  const your = props.turnIndex === props.clientPlayer.index
+  const player = props.players.find((p) => props.turnIndex === p.index)
   return (
     <>
-      <Typography>It's your turn</Typography>
+      <Typography>It's {your ? 'your' : `${player.name}'s`} turn</Typography>
     </>
   )
 }

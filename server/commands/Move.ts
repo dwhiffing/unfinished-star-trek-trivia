@@ -14,8 +14,8 @@ export class MoveCommand extends Command<
     const player = this.state.players.find((p) => p.id === playerId)
     if (this.state.turnIndex !== player.index) return false
 
-    const playerOnNode = this.state.players.find((p) => p.x === x && p.y === y)
-    if (playerOnNode) return false
+    // const playerOnNode = this.state.players.find((p) => p.x === x && p.y === y)
+    // if (playerOnNode) return false
 
     return y === player.y - 1 || y === player.y || y === player.y + 1
   }

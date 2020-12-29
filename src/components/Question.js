@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
 import { Flex } from './Flex'
-import { Button, Typography } from '@material-ui/core'
+import { Box, Button, Typography } from '@material-ui/core'
 
 export const Question = ({ disabled, question, onClick }) => {
   const [revealed, setRevealed] = useState(false)
+  const [selectedAnswer, setSelectedAnswer] = useState(false)
   if (!question) return null
   const { label, answers = [], level, correctAnswer } = question
 
   return (
     <Flex variant="column center">
-      <Flex
-        flex={0}
-        variant="column justify-between"
-        style={{ minHeight: 250 }}
-      >
-        <Typography style={{ textAlign: 'center', maxWidth: 600 }}>
+      <Flex flex={0} variant="column justify-between">
+        <Typography
+          style={{ textAlign: 'center', maxWidth: 600, marginBottom: 64 }}
+        >
           {label} ({level})
         </Typography>
 
@@ -23,38 +22,63 @@ export const Question = ({ disabled, question, onClick }) => {
             <>
               {revealed ? (
                 <>
-                  <Typography>{correctAnswer}</Typography>
+                  <Typography style={{ marginBottom: 16 }}>
+                    {correctAnswer}
+                  </Typography>
 
-                  <AnswerButton
-                    disabled={disabled}
-                    onClick={() => onClick(true)}
-                  >
-                    Correct
-                  </AnswerButton>
-                  <AnswerButton
-                    disabled={disabled}
-                    onClick={() => onClick(false)}
-                  >
-                    Incorrect
-                  </AnswerButton>
+                  <Box style={{ display: 'flex' }}>
+                    <AnswerButton
+                      disabled={disabled}
+                      onClick={() => onClick(true)}
+                    >
+                      Correct
+                    </AnswerButton>
+
+                    <Box mx={1} />
+
+                    <AnswerButton
+                      disabled={disabled}
+                      onClick={() => onClick(false)}
+                    >
+                      Incorrect
+                    </AnswerButton>
+                  </Box>
                 </>
               ) : (
-                <AnswerButton
-                  disabled={disabled}
-                  onClick={() => setRevealed(true)}
-                >
-                  Reveal
-                </AnswerButton>
+                <>
+                  <Typography style={{ marginBottom: 16 }}>
+                    State your answer to the group before revealing!
+                  </Typography>
+                  <AnswerButton
+                    disabled={disabled}
+                    onClick={() => setRevealed(true)}
+                  >
+                    Reveal
+                  </AnswerButton>
+                </>
               )}
             </>
           ) : (
             <>
+              <Typography
+                style={{
+                  color: selectedAnswer === correctAnswer ? 'green' : 'red',
+                  marginBottom: 16,
+                }}
+              >
+                {revealed
+                  ? selectedAnswer === correctAnswer
+                    ? 'Correct!'
+                    : 'Incorrect!'
+                  : ''}
+              </Typography>
               {answers.map((answer) => (
                 <AnswerButton
                   key={answer}
                   disabled={disabled}
                   active={revealed && answer === correctAnswer}
                   onClick={() => {
+                    setSelectedAnswer(answer)
                     onClick(answer)
                     setRevealed(true)
                   }}

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Box, Typography, TextField } from '@material-ui/core'
 import { Flex } from '../components/Flex'
-import faker from 'faker'
 import truncate from 'lodash/truncate'
 import { Action } from '../components/Action'
 
@@ -9,9 +8,7 @@ export function Lobby({ setRoom, setLocalRoom, setAIRoom }) {
   const intervalRef = useRef()
   const autoConnectAttempted = useRef(false)
   const [availableRooms, setAvailableRooms] = useState([])
-  const [name, setName] = useState(
-    localStorage.getItem('name') || faker.name.firstName(),
-  )
+  const [name, setName] = useState(localStorage.getItem('name') || '')
 
   const enterRoom = useCallback(
     (room, name) => {
