@@ -1,0 +1,30 @@
+Star Trek Triva game
+
+Thematics
+  A temporal anomaly is threatening the safety of universe.
+
+Objective
+  Answer questions about TNG correctly to move through the sector. Collect 6 temporal fragments and find Q to win!
+
+Gameplay
+  Players move ships positioned on a tree of nodes
+  Each turn, a player is asked a question.  If answered correctly, a player can move their ship
+  If answered incorrectly and the player has a shield, they get another attempt
+  When moving, you can either go left or right
+  Players can scroll up and down to see the entire sector
+  
+  When landing on a node, different things can happen depending on the nodes color
+    if the player lands on a red node, they have an encounter with a hostile alien
+      Crystalline Entity (Hard)
+      Borg (Hard)
+      Cardasians (Medium)
+      Romulan (Medium)
+      Nausicans (Easy)
+      Pakled (Easy)
+
+    if the player lands on a green node, they have an encounter with a friendly/neutral alien
+      Klingon: Right: Photon torpedoes (eliminate one of the options for multiple choice)
+      Vulcan: Right: Upgraded engines (move up to 2 nodes)
+      Bajoran: Right: Upgraded shields (get a second chance on your next question)
+  
+    if the player lands on a blue node, they can transport to any other blue node
